@@ -1,5 +1,5 @@
 ---
-import '../styles/global.css';
+import "../styles/global.css";
 
 interface Props {
   title: string;
@@ -8,15 +8,15 @@ interface Props {
 
 const {
   title,
-  description = 'CampusXI public policies, installation links, and support pages.'
+  description = "CampusXI public policies, installation links, and support pages.",
 } = Astro.props;
 
 const navItems = [
-  { href: '/privacy-policy', label: 'Privacy Policy' },
-  { href: '/terms-of-use', label: 'Terms of Use' },
-  { href: '/install', label: 'Install' },
-  { href: '/help-center', label: 'Help Center' },
-  { href: '/report-bug', label: 'Report Bug' }
+  { href: "/privacy-policy", label: "Privacy Policy" },
+  { href: "/terms-of-use", label: "Terms of Use" },
+  { href: "/install", label: "Install" },
+  { href: "/help-center", label: "Help Center" },
+  { href: "/report-bug", label: "Report Bug" },
 ];
 
 const currentPath = Astro.url.pathname;
@@ -56,7 +56,11 @@ const currentPath = Astro.url.pathname;
 
     <footer class="site-footer">
       <p>CampusXI</p>
-      <p>Questions? Email <a href="mailto:support@campusxi.app">support@campusxi.app</a></p>
+      <p>
+        Questions? Email <a href="mailto:support@campusxi.com"
+          >support@campusxi.com</a
+        >
+      </p>
     </footer>
   </body>
 </html>
