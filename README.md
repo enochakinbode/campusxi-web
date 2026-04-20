@@ -1,4 +1,4 @@
-# CampusXI Public Site (Astro)
+# Campus XI Public Site (Astro)
 
 Public site with these pages:
 

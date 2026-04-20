@@ -109,8 +109,8 @@ export const POST: APIRoute = async ({ request }) => {
 
   const subject =
     requestType === 'help'
-      ? `CampusXI Help Request - ${name}`
-      : `CampusXI Bug Report - ${name}`;
+      ? `Campus XI Help Request - ${name}`
+      : `Campus XI Bug Report - ${name}`;
 
   const textLines = [
     buildLine('Type', requestType === 'help' ? 'Help Request' : 'Bug Report'),
@@ -120,7 +120,7 @@ export const POST: APIRoute = async ({ request }) => {
   ];
 
   const htmlLines = [
-    '<h2>CampusXI Support Submission</h2>',
+    '<h2>Campus XI Support Submission</h2>',
     buildHtmlLine('Type', requestType === 'help' ? 'Help Request' : 'Bug Report'),
     buildHtmlLine('Submitted At (UTC)', submittedAt),
     buildHtmlLine('Name', name),

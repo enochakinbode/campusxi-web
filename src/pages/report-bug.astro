@@ -1,24 +1,29 @@
 ---
-import SiteLayout from '../layouts/SiteLayout.astro';
+import SiteLayout from "../layouts/SiteLayout.astro";
 ---
 
 <SiteLayout
   title="Report Bug"
-  description="Report a CampusXI bug and include screenshots for faster support resolution."
+  description="Report a Campus XI bug and include screenshots for faster support resolution."
 >
   <section class="card hero">
     <p class="badge">Support</p>
     <h1>Report a Bug</h1>
     <p>
-      Share what happened and include screenshots if possible.
-      Bug reports are delivered directly to our support email.
+      Share what happened and include screenshots if possible. Bug reports are
+      delivered directly to our support email.
     </p>
   </section>
 
   <section class="card">
     <h2 class="section-title">Bug Report Form</h2>
 
-    <form data-support-form action="/api/support" method="post" enctype="multipart/form-data">
+    <form
+      data-support-form
+      action="/api/support"
+      method="post"
+      enctype="multipart/form-data"
+    >
       <input type="hidden" name="requestType" value="bug" />
 
       <div class="form-grid">
@@ -55,17 +60,22 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 
         <label class="full">
           What were you doing?
-          <textarea name="steps" required placeholder="Steps to reproduce"></textarea>
+          <textarea name="steps" required placeholder="Steps to reproduce"
+          ></textarea>
         </label>
 
         <label class="full">
           What happened?
-          <textarea name="actualResult" required placeholder="Describe the bug"></textarea>
+          <textarea name="actualResult" required placeholder="Describe the bug"
+          ></textarea>
         </label>
 
         <label class="full">
           What did you expect to happen?
-          <textarea name="expectedResult" required placeholder="Describe expected behavior"></textarea>
+          <textarea
+            name="expectedResult"
+            required
+            placeholder="Describe expected behavior"></textarea>
         </label>
 
         <label class="full">
