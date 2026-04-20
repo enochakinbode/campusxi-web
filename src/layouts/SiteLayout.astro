@@ -1,0 +1,62 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = 'CampusXI public policies, installation links, and support pages.'
+} = Astro.props;
+
+const navItems = [
+  { href: '/privacy-policy', label: 'Privacy Policy' },
+  { href: '/terms-of-use', label: 'Terms of Use' },
+  { href: '/install', label: 'Install' },
+  { href: '/help-center', label: 'Help Center' },
+  { href: '/report-bug', label: 'Report Bug' }
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} | CampusXI</title>
+    <meta name="description" content={description} />
+  </head>
+  <body>
+    <div class="bg-blur bg-blur-top"></div>
+    <div class="bg-blur bg-blur-bottom"></div>
+
+    <header class="site-header">
+      <a class="brand" href="/install">CampusXI</a>
+      <nav class="main-nav" aria-label="Main">
+        {
+          navItems.map((item) => (
+            <a
+              href={item.href}
+              class:list={{ active: currentPath === item.href }}
+            >
+              {item.label}
+            </a>
+          ))
+        }
+      </nav>
+    </header>
+
+    <main class="page-wrap">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <p>CampusXI</p>
+      <p>Questions? Email <a href="mailto:support@campusxi.app">support@campusxi.app</a></p>
+    </footer>
+  </body>
+</html>

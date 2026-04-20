@@ -1,0 +1,91 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+
+const effectiveDate = 'April 20, 2026';
+---
+
+<SiteLayout
+  title="Privacy Policy"
+  description="CampusXI Privacy Policy covering sign-in, profile data, app activity, storage permission, and payments."
+>
+  <section class="card hero">
+    <p class="badge">Legal</p>
+    <h1>Privacy Policy</h1>
+    <p class="meta">Effective date: {effectiveDate}</p>
+    <p>
+      This Privacy Policy explains what information CampusXI collects, how we use it,
+      and the choices available to you.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2 class="section-title">Information We Collect</h2>
+    <h3>Account Sign-In (Firebase Authentication)</h3>
+    <ul class="list">
+      <li>Email address</li>
+      <li>Unique account ID</li>
+      <li>Sign-in provider details (for example Google or Apple)</li>
+    </ul>
+
+    <h3>Profile Information You Provide</h3>
+    <ul class="list">
+      <li>Display name</li>
+      <li>Team name</li>
+      <li>Avatar or profile image (if you upload one)</li>
+    </ul>
+
+    <h3>App Activity</h3>
+    <ul class="list">
+      <li>Fantasy team selections</li>
+      <li>League participation</li>
+      <li>Saved preferences</li>
+      <li>Generated social cards</li>
+    </ul>
+
+    <h3>Device Storage Access</h3>
+    <p>
+      We request device storage or photo access only when you choose to save social cards to your gallery.
+      We do not access your gallery otherwise.
+    </p>
+
+    <h3>Payments</h3>
+    <ul class="list">
+      <li>Purchase history</li>
+      <li>Pass or subscription status</li>
+      <li>Transaction confirmation IDs</li>
+      <li>Payment processor metadata</li>
+    </ul>
+    <p class="notice">
+      Card and bank details are processed by third-party payment providers (for example Stripe,
+      Paystack, Flutterwave, Apple, or Google Play) and are not stored by CampusXI.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2 class="section-title">How We Use Information</h2>
+    <ul class="list">
+      <li>To provide sign-in, account management, and core gameplay features.</li>
+      <li>To process purchases, validate pass access, and prevent fraud.</li>
+      <li>To generate and deliver user-requested social cards.</li>
+      <li>To respond to support requests and bug reports.</li>
+      <li>To improve reliability, security, and product experience.</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2 class="section-title">Data Safety and Sharing</h2>
+    <ul class="list">
+      <li>Authentication is managed through trusted providers including Firebase.</li>
+      <li>Payment transactions are processed securely by payment processors.</li>
+      <li>We may share data with service providers only as needed to run the service.</li>
+      <li>We do not sell your personal information.</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2 class="section-title">Contact</h2>
+    <p>
+      For privacy questions, email <a href="mailto:support@campusxi.app">support@campusxi.app</a>.
+    </p>
+  </section>
+</SiteLayout>

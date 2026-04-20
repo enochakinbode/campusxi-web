@@ -1,0 +1,83 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+---
+
+<SiteLayout
+  title="Help Center"
+  description="CampusXI Help Center with common answers and direct support form."
+>
+  <section class="card hero">
+    <p class="badge">Support</p>
+    <h1>Help Center</h1>
+    <p>
+      Use this page for account help, purchase issues, and gameplay questions.
+      All messages are sent to our support email.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2 class="section-title">Quick Answers</h2>
+
+    <div class="faq">
+      <h3>I cannot sign in. What should I do?</h3>
+      <p>Try resetting your password first. If that fails, submit the form below with the email tied to your account.</p>
+    </div>
+
+    <div class="faq">
+      <h3>My pass does not show as active.</h3>
+      <p>
+        Include your transaction confirmation ID and platform (Apple, Google Play, or web checkout)
+        in your support request so we can verify quickly.
+      </p>
+    </div>
+
+    <div class="faq">
+      <h3>Can I request a refund?</h3>
+      <p>
+        Refunds are handled according to our Terms and your payment provider rules.
+        Share the purchase date, amount, and provider in your message.
+      </p>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2 class="section-title">Send a Help Request</h2>
+
+    <form data-support-form action="/api/support" method="post">
+      <input type="hidden" name="requestType" value="help" />
+
+      <div class="form-grid">
+        <label>
+          Full Name
+          <input name="name" required />
+        </label>
+
+        <label>
+          Email Address
+          <input type="email" name="email" required />
+        </label>
+
+        <label class="full">
+          Topic
+          <select name="topic" required>
+            <option value="">Select one</option>
+            <option value="Account">Account</option>
+            <option value="Purchase">Purchase</option>
+            <option value="Gameplay">Gameplay</option>
+            <option value="Other">Other</option>
+          </select>
+        </label>
+
+        <label class="full">
+          Message
+          <textarea name="message" required placeholder="Tell us what you need help with."></textarea>
+        </label>
+      </div>
+
+      <button type="submit">Send Help Request</button>
+      <p class="form-status" aria-live="polite"></p>
+    </form>
+  </section>
+
+  <script type="module" src="/scripts/support-form.js"></script>
+</SiteLayout>
