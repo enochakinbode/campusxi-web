@@ -1,3 +1,41 @@
 ---
-return Astro.redirect('/install');
+import SiteLayout from "../layouts/SiteLayout.astro";
 ---
+
+<SiteLayout
+  title="Home"
+  description="Campus XI is the fantasy football destination built around campus football culture, installs, support, and policies."
+>
+  <section class="hero-panel hero-panel--landing hero-panel--single home-hero">
+    <div class="hero-copy">
+      <p class="eyebrow">Campus XI</p>
+      <h1>Fantasy football for football events.</h1>
+      <p class="hero-text">
+        Join events, follow the action, build your squad, make your strategy,
+        and chase points on the leaderboard.
+      </p>
+    </div>
+  </section>
+
+  <section class="section-shell section-shell--split">
+    <article class="spotlight-card">
+      <p class="eyebrow">Install</p>
+      <h2>Get ready for Campus XI.</h2>
+      <p>
+        Store links are not live yet, but the install page gives users the right
+        next step and contact path.
+      </p>
+      <a class="text-link" href="/install">Open install page</a>
+    </article>
+
+    <article class="spotlight-card">
+      <p class="eyebrow">Support</p>
+      <h2>Need help or want to report a bug?</h2>
+      <p>Use the help and bug pages to send the details your team needs.</p>
+      <div class="inline-links">
+        <a class="text-link" href="/help-center">Help Center</a>
+        <a class="text-link" href="/report-bug">Report Bug</a>
+      </div>
+    </article>
+  </section>
+</SiteLayout>

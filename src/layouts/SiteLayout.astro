@@ -12,11 +12,12 @@ const {
 } = Astro.props;
 
 const navItems = [
-  { href: "/privacy-policy", label: "Privacy Policy" },
-  { href: "/terms-of-use", label: "Terms of Use" },
+  { href: "/", label: "Home" },
   { href: "/install", label: "Install" },
   { href: "/help-center", label: "Help Center" },
   { href: "/report-bug", label: "Report Bug" },
+  { href: "/privacy-policy", label: "Privacy Policy" },
+  { href: "/terms-of-use", label: "Terms of Use" },
 ];
 
 const currentPath = Astro.url.pathname;
@@ -29,14 +30,44 @@ const currentPath = Astro.url.pathname;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title} | Campus XI</title>
     <meta name="description" content={description} />
+    <meta name="theme-color" content="#350252" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
+    <link rel="preconnect" href="https://fonts.cdnfonts.com" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.cdnfonts.com/css/kollektif"
+    />
   </head>
   <body>
-    <div class="bg-blur bg-blur-top"></div>
-    <div class="bg-blur bg-blur-bottom"></div>
+    <div class="site-backdrop">
+      <div class="site-glow site-glow-left"></div>
+      <div class="site-glow site-glow-right"></div>
+      <div class="site-grid"></div>
+    </div>
 
     <header class="site-header">
-      <a class="brand" href="/install">Campus XI</a>
-      <nav class="main-nav" aria-label="Main">
+      <a class="brand" href="/" aria-label="Campus XI home">
+        <img
+          src="/brand/cxi-logo-white.png"
+          alt="Campus XI"
+          width="240"
+          height="98"
+        />
+      </a>
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="main-navigation"
+        aria-label="Open menu"
+        data-menu-toggle
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="main-nav" id="main-navigation" aria-label="Main" data-main-nav>
         {
           navItems.map((item) => (
             <a
@@ -55,12 +86,57 @@ const currentPath = Astro.url.pathname;
     </main>
 
     <footer class="site-footer">
-      <p>Campus XI</p>
-      <p>
+      <div class="footer-brand">
+        <img
+          src="/brand/cxi-logo-white.png"
+          alt="Campus XI"
+          width="180"
+          height="88"
+        />
+        <p>Official Campus XI links for installs, support, and policies.</p>
+      </div>
+
+      <div class="footer-links">
+        <a href="/install">Install</a>
+        <a href="/help-center">Help Center</a>
+        <a href="/privacy-policy">Privacy Policy</a>
+        <a href="/terms-of-use">Terms of Use</a>
+      </div>
+
+      <p class="footer-contact">
         Questions? Email <a href="mailto:support@campusxi.com"
           >support@campusxi.com</a
         >
       </p>
     </footer>
+
+    <script is:inline>
+      const navToggle = document.querySelector("[data-menu-toggle]");
+      const siteHeader = document.querySelector(".site-header");
+      const navLinks = document.querySelectorAll("[data-main-nav] a");
+
+      if (navToggle instanceof HTMLButtonElement && siteHeader) {
+        const setMenuState = (isOpen) => {
+          siteHeader.classList.toggle("is-menu-open", isOpen);
+          navToggle.setAttribute("aria-expanded", String(isOpen));
+          navToggle.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
+        };
+
+        navToggle.addEventListener("click", () => {
+          const isOpen = navToggle.getAttribute("aria-expanded") === "true";
+          setMenuState(!isOpen);
+        });
+
+        navLinks.forEach((link) => {
+          link.addEventListener("click", () => setMenuState(false));
+        });
+
+        window.addEventListener("resize", () => {
+          if (window.innerWidth > 720) {
+            setMenuState(false);
+          }
+        });
+      }
+    </script>
   </body>
 </html>

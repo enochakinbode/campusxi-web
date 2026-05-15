@@ -6,83 +6,191 @@ import SiteLayout from "../layouts/SiteLayout.astro";
   title="Help Center"
   description="Campus XI Help Center with common answers and direct support form."
 >
-  <section class="card hero">
-    <p class="badge">Support</p>
-    <h1>Help Center</h1>
-    <p>
-      Use this page for account help, purchase issues, and gameplay questions.
-      All messages are sent to our support email.
-    </p>
-  </section>
-
-  <section class="card">
-    <h2 class="section-title">Quick Answers</h2>
-
-    <div class="faq">
-      <h3>I cannot sign in. What should I do?</h3>
-      <p>
-        Try resetting your password first. If that fails, submit the form below
-        with the email tied to your account.
-      </p>
-    </div>
-
-    <div class="faq">
-      <h3>My pass does not show as active.</h3>
-      <p>
-        Include your transaction confirmation ID and platform (Apple, Google
-        Play, or web checkout) in your support request so we can verify quickly.
-      </p>
-    </div>
-
-    <div class="faq">
-      <h3>Can I request a refund?</h3>
-      <p>
-        Refunds are handled according to our Terms and your payment provider
-        rules. Share the purchase date, amount, and provider in your message.
+  <section class="hero-panel hero-panel--single">
+    <div class="hero-copy">
+      <p class="eyebrow">Support</p>
+      <h1>Help Center</h1>
+      <p class="hero-text">
+        Use this page for account help, purchase issues, and gameplay questions.
+        Send clear details so the team can respond quickly.
       </p>
     </div>
   </section>
 
-  <section class="card">
-    <h2 class="section-title">Send a Help Request</h2>
+  <section class="section-shell help-faq-shell">
+    <div class="section-heading">
+      <p class="eyebrow">Frequently Asked Questions</p>
+      <h2>Open a question to see the answer.</h2>
+    </div>
 
-    <form data-support-form action="/api/support" method="post">
-      <input type="hidden" name="requestType" value="help" />
+    <div class="faq-list">
+      <details class="faq-item" open>
+        <summary>I forgot my email. What should I do?</summary>
+        <p>
+          Use the password reset or account recovery flow for the email you
+          normally use. If you are not sure which email is linked to your
+          account, contact support and include your team name and any purchase
+          details that can help us locate the account.
+        </p>
+      </details>
 
-      <div class="form-grid">
-        <label>
-          Full Name
-          <input name="name" required />
-        </label>
+      <details class="faq-item">
+        <summary>I cannot sign in. What should I do?</summary>
+        <p>
+          Make sure you are using the same sign-in method you used when you
+          created the account. For example, if you signed up with Google, you
+          need to keep using Google. If you signed up with Apple, use Apple.
+          If you use the wrong method, the sign-in may fail or open a different
+          account.
+        </p>
+      </details>
 
-        <label>
-          Email Address
-          <input type="email" name="email" required />
-        </label>
+      <details class="faq-item">
+        <summary>My pass is not showing as active.</summary>
+        <p>
+          First, try restarting the app and check again. If the pass still does
+          not appear as active, share your transaction details and tell us
+          whether the purchase was made through Apple or Google Play. Include
+          the account email you used in the app so we can verify the purchase
+          and activation status.
+        </p>
+      </details>
 
-        <label class="full">
-          Topic
-          <select name="topic" required>
-            <option value="">Select one</option>
-            <option value="Account">Account</option>
-            <option value="Purchase">Purchase</option>
-            <option value="Gameplay">Gameplay</option>
-            <option value="Other">Other</option>
-          </select>
-        </label>
+      <details class="faq-item">
+        <summary>Can I request a refund?</summary>
+        <p>
+          If a purchase was completed and verification was successful, it is
+          generally non-refundable. If the purchase went through but
+          verification failed, contact support with the purchase details so we
+          can review it.
+        </p>
+      </details>
 
-        <label class="full">
-          Message
-          <textarea
-            name="message"
-            required
-            placeholder="Tell us what you need help with."></textarea>
-        </label>
-      </div>
+      <details class="faq-item">
+        <summary>I cannot edit my team.</summary>
+        <p>
+          Team editing may be locked because the deadline has passed for that
+          round or matchday. Once the deadline closes, changes are restricted
+          until the next allowed window.
+        </p>
+      </details>
 
-      <button type="submit">Send Help Request</button>
-      <p class="form-status" aria-live="polite"></p>
-    </form>
+      <details class="faq-item">
+        <summary>I cannot transfer players.</summary>
+        <p>
+          Transfers may be unavailable when the deadline window is closed. If
+          the deadline has passed, wait for the next transfer window.
+        </p>
+      </details>
+
+      <details class="faq-item">
+        <summary>My event says not available.</summary>
+        <p>
+          This could mean the event has not started yet or that it has already
+          ended. Check the event timing and availability window first. If it
+          still looks wrong, contact support with the event name and the
+          account you used.
+        </p>
+      </details>
+
+      <details class="faq-item">
+        <summary>I cannot change formation.</summary>
+        <p>
+          Formation flexibility is a premium feature. Bronze Pass and above let
+          you use any formation for your team.
+        </p>
+      </details>
+
+      <details class="faq-item">
+        <summary>I cannot set deadline reminders.</summary>
+        <p>
+          Deadline reminders are part of Tournament Pass features. Bronze Pass
+          allows 1 custom deadline reminder per matchday, Silver allows 2, and
+          Gold allows 3.
+        </p>
+      </details>
+
+      <details class="faq-item">
+        <summary>What comes with Bronze Pass?</summary>
+        <p>
+          Bronze Pass gives you team renaming at any time during the
+          tournament, flexible formations, top-5 player tracking each
+          matchday, 1 custom deadline reminder per matchday, a premium profile
+          and leaderboard badge, improved action limits, rank progression
+          badges, and enhanced share card styles.
+        </p>
+      </details>
+
+      <details class="faq-item">
+        <summary>What comes with Silver Pass?</summary>
+        <p>
+          Silver Pass includes everything in Bronze, then adds Smart XI for
+          suggested lineups and key squad decisions, squad insights, deeper
+          manager comparison, live fixture updates during the matchday, full
+          published squad history for managers on the leaderboard, 2 custom
+          deadline reminders per matchday, and further improved action limits.
+        </p>
+      </details>
+
+      <details class="faq-item">
+        <summary>What comes with Gold Pass?</summary>
+        <p>
+          Gold Pass includes everything in Silver, then adds live activity and
+          fixture score updates during the matchday, instant alerts for key
+          fixture activity, 3 custom deadline reminders per matchday, live
+          activities and squads for managers on the leaderboard, leaderboard
+          rank progression badges, and the most generous action limits.
+        </p>
+      </details>
+    </div>
+  </section>
+
+  <section class="section-shell form-shell form-shell--spaced help-contact-shell">
+    <div class="form-intro">
+      <p class="eyebrow">Direct contact</p>
+      <h2>Send a help request.</h2>
+      <p>This form sends directly to your support flow.</p>
+    </div>
+
+    <div class="form-card">
+      <form data-support-form action="/api/support" method="post">
+        <input type="hidden" name="requestType" value="help" />
+
+        <div class="form-grid">
+          <label>
+            Full Name
+            <input name="name" required />
+          </label>
+
+          <label>
+            Email Address
+            <input type="email" name="email" required />
+          </label>
+
+          <label class="full">
+            Topic
+            <select name="topic" required>
+              <option value="">Select one</option>
+              <option value="Account">Account</option>
+              <option value="Purchase">Purchase</option>
+              <option value="Gameplay">Gameplay</option>
+              <option value="Other">Other</option>
+            </select>
+          </label>
+
+          <label class="full">
+            Message
+            <textarea
+              name="message"
+              required
+              placeholder="Tell us what you need help with."></textarea>
+          </label>
+        </div>
+
+        <button type="submit">Send Help Request</button>
+        <p class="form-status" aria-live="polite"></p>
+      </form>
+    </div>
   </section>
 
   <script type="module" src="/scripts/support-form.js"></script>

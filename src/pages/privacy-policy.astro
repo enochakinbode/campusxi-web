@@ -1,103 +1,148 @@
 ---
 import SiteLayout from "../layouts/SiteLayout.astro";
 
-const effectiveDate = "April 20, 2026";
+const effectiveDate = "May 15, 2026";
 ---
 
 <SiteLayout
   title="Privacy Policy"
   description="Campus XI Privacy Policy covering sign-in, profile data, app activity, storage permission, and payments."
 >
-  <section class="card hero">
-    <p class="badge">Legal</p>
-    <h1>Privacy Policy</h1>
-    <p class="meta">Effective date: {effectiveDate}</p>
-    <p>
-      This Privacy Policy explains what information Campus XI collects, how we
-      use it, and the choices available to you.
-    </p>
+  <section class="hero-panel hero-panel--compact">
+    <div class="hero-copy">
+      <p class="eyebrow">Legal</p>
+      <h1>Privacy Policy</h1>
+      <p class="meta">Effective date: {effectiveDate}</p>
+      <p class="hero-text">
+        This explains what Campus XI collects, how it uses that information,
+        and the choices available to users of the app.
+      </p>
+    </div>
   </section>
 
-  <section class="card">
-    <h2 class="section-title">Information We Collect</h2>
-    <h3>Account Sign-In (Firebase Authentication)</h3>
-    <ul class="list">
-      <li>Email address</li>
-      <li>Unique account ID</li>
-      <li>Sign-in provider details (for example Google or Apple)</li>
-    </ul>
+  <section class="section-shell legal-shell">
+    <article class="legal-card">
+      <h2>What We Collect</h2>
+      <h3>Sign-In and Account Information</h3>
+      <ul class="list">
+        <li>Firebase Authentication account ID</li>
+        <li>Email address</li>
+        <li>Display name or profile name shared by Google or Apple</li>
+        <li>Profile photo URL, if shared by the sign-in provider</li>
+        <li>Sign-in provider details, such as Google or Apple</li>
+      </ul>
+      <p>
+        Campus XI uses Firebase Authentication with Google Sign-In and Apple
+        Sign-In. We collect only the account information needed to create and
+        manage the user account in the app.
+      </p>
+      <p class="notice">
+        While Campus XI keeps personal data collection light, account details
+        such as email address, profile name, and team name are still personal
+        data.
+      </p>
+    </article>
 
-    <h3>Profile Information You Provide</h3>
-    <ul class="list">
-      <li>Display name</li>
-      <li>Team name</li>
-      <li>Avatar or profile image (if you upload one)</li>
-    </ul>
+    <article class="legal-card">
+      <h2>Gameplay and Profile Data</h2>
+      <ul class="list">
+        <li>Team name chosen by the user</li>
+        <li>Squad selections and fantasy team activity</li>
+        <li>Points, rankings, and leaderboard position</li>
+        <li>Event and tournament participation</li>
+        <li>Premium pass status and related feature access</li>
+      </ul>
+      <p>
+        This information is used to operate the fantasy football experience,
+        including scoring, team management, leaderboard display, and premium
+        feature access.
+      </p>
+    </article>
 
-    <h3>App Activity</h3>
-    <ul class="list">
-      <li>Fantasy team selections</li>
-      <li>League participation</li>
-      <li>Saved preferences</li>
-      <li>Generated social cards</li>
-    </ul>
+    <article class="legal-card">
+      <h2>Purchases, Passes, and Gift Codes</h2>
+      <ul class="list">
+        <li>Pass tier information, such as Bronze, Silver, or Gold</li>
+        <li>Purchase status and purchase verification result</li>
+        <li>Transaction or payment reference information</li>
+        <li>Gift code issuance and redemption records</li>
+        <li>Upgrade history between pass tiers</li>
+      </ul>
+      <p>
+        We use this information to activate premium access, process upgrades,
+        support gift purchases and redemptions, investigate failed
+        verifications, and respond to support questions.
+      </p>
+      <p class="notice">
+        Campus XI does not store full payment card details. Payments are
+        handled by third-party payment or platform providers.
+      </p>
+    </article>
 
-    <h3>Device Storage Access</h3>
-    <p>
-      We request device storage or photo access only when you choose to save
-      social cards to your gallery. We do not access your gallery otherwise.
-    </p>
+    <article class="legal-card">
+      <h2>Device Access and Saved Cards</h2>
+      <p>
+        Campus XI may ask for device permission when a user chooses to save a
+        performance card or similar image to their gallery.
+      </p>
+      <ul class="list">
+        <li>We allow user-requested saving to the device gallery.</li>
+        <li>We do not browse or import photos from the user's gallery.</li>
+        <li>We do not collect the user's gallery contents.</li>
+      </ul>
+    </article>
 
-    <h3>Payments</h3>
-    <ul class="list">
-      <li>Purchase history</li>
-      <li>Pass or subscription status</li>
-      <li>Transaction confirmation IDs</li>
-      <li>Payment processor metadata</li>
-    </ul>
-    <p class="notice">
-      Card and bank details are processed by third-party payment providers (for
-      example Stripe, Paystack, Flutterwave, Apple, or Google Play) and are not
-      stored by Campus XI.
-    </p>
-  </section>
+    <article class="legal-card">
+      <h2>How We Use Information</h2>
+      <ul class="list">
+        <li>To provide sign-in, account access, and core gameplay.</li>
+        <li>To create and manage teams, points, and leaderboards.</li>
+        <li>To activate passes and premium tools after successful purchase.</li>
+        <li>To support gift codes and pass upgrades.</li>
+        <li>To respond to support emails, purchase issues, and bug reports.</li>
+        <li>To protect the app against abuse, fraud, and misuse.</li>
+      </ul>
+    </article>
 
-  <section class="card">
-    <h2 class="section-title">How We Use Information</h2>
-    <ul class="list">
-      <li>
-        To provide sign-in, account management, and core gameplay features.
-      </li>
-      <li>To process purchases, validate pass access, and prevent fraud.</li>
-      <li>To generate and deliver user-requested social cards.</li>
-      <li>To respond to support requests and bug reports.</li>
-      <li>To improve reliability, security, and product experience.</li>
-    </ul>
-  </section>
+    <article class="legal-card">
+      <h2>Sharing and Service Providers</h2>
+      <ul class="list">
+        <li>Authentication is provided through Firebase and sign-in providers.</li>
+        <li>Payment processing is handled by third-party payment partners or platform stores.</li>
+        <li>We may share limited data with service providers only as needed to run the app.</li>
+        <li>We do not sell personal information.</li>
+      </ul>
+    </article>
 
-  <section class="card">
-    <h2 class="section-title">Data Safety and Sharing</h2>
-    <ul class="list">
-      <li>
-        Authentication is managed through trusted providers including Firebase.
-      </li>
-      <li>
-        Payment transactions are processed securely by payment processors.
-      </li>
-      <li>
-        We may share data with service providers only as needed to run the
-        service.
-      </li>
-      <li>We do not sell your personal information.</li>
-    </ul>
-  </section>
+    <article class="legal-card">
+      <h2>Retention and User Requests</h2>
+      <p>
+        We keep account, gameplay, and purchase records for as long as needed
+        to operate the app, maintain security, resolve disputes, and comply
+        with legal or accounting obligations.
+      </p>
+      <p>
+        Users who want help with access, correction, or deletion requests can
+        contact support. Some records may need to be retained for security,
+        fraud prevention, or legal reasons.
+      </p>
+    </article>
 
-  <section class="card">
-    <h2 class="section-title">Contact</h2>
-    <p>
-      For privacy questions, email <a href="mailto:support@campusxi.com"
-        >support@campusxi.com</a
-      >.
-    </p>
+    <article class="legal-card">
+      <h2>Changes to This Policy</h2>
+      <p>
+        We may update this Privacy Policy from time to time. When we do, we may
+        revise the effective date and post the updated version in the app or on
+        this website.
+      </p>
+    </article>
+
+    <article class="legal-card">
+      <h2>Contact</h2>
+      <p>
+        For privacy questions, account requests, or data concerns, email
+        <a href="mailto:support@campusxi.com">support@campusxi.com</a>.
+      </p>
+    </article>
   </section>
 </SiteLayout>

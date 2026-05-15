@@ -1,82 +1,164 @@
 ---
 import SiteLayout from "../layouts/SiteLayout.astro";
 
-const effectiveDate = "April 20, 2026";
+const effectiveDate = "May 15, 2026";
 ---
 
 <SiteLayout
   title="Terms of Use"
   description="Campus XI Terms of Use including purchases, passes, refund rules, and social card usage limits."
 >
-  <section class="card hero">
-    <p class="badge">Legal</p>
-    <h1>Terms of Use</h1>
-    <p class="meta">Effective date: {effectiveDate}</p>
-    <p>
-      By using Campus XI, you agree to these Terms. If you do not agree, do not
-      use the app.
-    </p>
+  <section class="hero-panel hero-panel--compact">
+    <div class="hero-copy">
+      <p class="eyebrow">Legal</p>
+      <h1>Terms of Use</h1>
+      <p class="meta">Effective date: {effectiveDate}</p>
+      <p class="hero-text">
+        By using Campus XI, users agree to these terms. If they do not agree,
+        they should not use the app.
+      </p>
+    </div>
   </section>
 
-  <section class="card">
-    <h2 class="section-title">Eligibility and Accounts</h2>
-    <ul class="list">
-      <li>You are responsible for keeping your account credentials secure.</li>
-      <li>You agree to provide accurate account and profile information.</li>
-      <li>
-        You are responsible for activity that happens through your account.
-      </li>
-    </ul>
-  </section>
+  <section class="section-shell legal-shell">
+    <article class="legal-card">
+      <h2>What Campus XI Is</h2>
+      <p>
+        Campus XI is a fantasy football application that allows organizers to
+        host events and allows users to join, build squads, earn points, follow
+        leaderboards, and use event-related premium features.
+      </p>
+      <p>
+        Features, scoring rules, event formats, prizes, and premium tools may
+        vary by event, tournament, or app update.
+      </p>
+    </article>
 
-  <section class="card">
-    <h2 class="section-title">Purchases, Passes, and Access</h2>
-    <ul class="list">
-      <li>Purchases unlock premium features shown at checkout.</li>
-      <li>Pass pricing and feature packaging may change in future updates.</li>
-      <li>
-        Passes may be one-time, seasonal, or recurring depending on checkout
-        details.
-      </li>
-      <li>
-        Abuse, fraud, chargeback misuse, or policy violations may lead to
-        revoked access.
-      </li>
-    </ul>
-    <p class="notice">
-      Unless required by law, purchases are non-refundable after activation. If
-      a store or payment provider offers a separate refund process, that process
-      applies.
-    </p>
-  </section>
+    <article class="legal-card">
+      <h2>Accounts and Acceptable Use</h2>
+      <ul class="list">
+        <li>Users are responsible for keeping their sign-in credentials secure.</li>
+        <li>Users must provide accurate account and team information.</li>
+        <li>Users are responsible for activity carried out through their account.</li>
+        <li>Users must not misuse the app, interfere with events, exploit bugs, or attempt fraud.</li>
+      </ul>
+    </article>
 
-  <section class="card">
-    <h2 class="section-title">Social Cards</h2>
-    <p>
-      Users may generate and save shareable social cards for personal use.
-      Commercial resale, impersonation, or misuse of Campus XI branding is
-      prohibited.
-    </p>
-  </section>
+    <article class="legal-card">
+      <h2>Gameplay, Scoring, and Leaderboards</h2>
+      <ul class="list">
+        <li>Users may build teams and participate in organizer-hosted events.</li>
+        <li>Points, rankings, and leaderboard results are determined by the app's event logic and rules.</li>
+        <li>Organizers may set event-specific conditions, subject to the app's available features.</li>
+        <li>Campus XI may correct obvious scoring, ranking, or technical errors where necessary.</li>
+      </ul>
+    </article>
 
-  <section class="card">
-    <h2 class="section-title">Service Changes and Availability</h2>
-    <ul class="list">
-      <li>
-        We may update, suspend, or discontinue features with or without notice.
-      </li>
-      <li>
-        We are not liable for interruptions caused by third-party providers.
-      </li>
-      <li>You are responsible for your network or device access costs.</li>
-    </ul>
-  </section>
+    <article class="legal-card">
+      <h2>Passes and Premium Access</h2>
+      <p>
+        Campus XI may offer premium passes, including Bronze, Silver, and Gold
+        tiers. These passes may unlock premium tools and features, including
+        performance-related tools such as squad insight or similar premium
+        utilities described in the app at the time of purchase.
+      </p>
+      <ul class="list">
+        <li>Pass access is granted after successful purchase and verification.</li>
+        <li>Pass features, pricing, and packaging may change over time.</li>
+        <li>Premium tools are intended to assist users but do not guarantee better results, prizes, or leaderboard outcomes.</li>
+      </ul>
+    </article>
 
-  <section class="card">
-    <h2 class="section-title">Contact</h2>
-    <p>
-      Questions about these Terms can be sent to
-      <a href="mailto:support@campusxi.com">support@campusxi.com</a>.
-    </p>
+    <article class="legal-card">
+      <h2>Gift Purchases and Codes</h2>
+      <p>
+        Campus XI may allow users to buy eligible passes or gifts for another
+        person. In those cases, the purchase may generate a code that can be
+        shared and redeemed by another user on their own account.
+      </p>
+      <ul class="list">
+        <li>Gift codes may be single-use and may be subject to validation rules.</li>
+        <li>Users are responsible for sending gift codes to the intended recipient.</li>
+        <li>Campus XI may cancel, block, or investigate codes tied to fraud, abuse, or verification issues.</li>
+      </ul>
+    </article>
+
+    <article class="legal-card">
+      <h2>Upgrades</h2>
+      <p>
+        Campus XI may allow users to upgrade from one pass tier to a higher
+        tier. Where offered, upgrade pricing may reflect the difference between
+        the current eligible pass value and the higher-tier pass price, rather
+        than charging full price again.
+      </p>
+      <p>
+        Upgrade availability, pricing logic, and eligibility may change over
+        time.
+      </p>
+    </article>
+
+    <article class="legal-card">
+      <h2>Refunds and Purchase Problems</h2>
+      <p>
+        If a purchase is completed and verification is successful, the purchase
+        is generally non-refundable except where required by law or required by
+        the relevant app store or payment provider.
+      </p>
+      <p class="notice">
+        If a purchase goes through but verification fails, the user should
+        contact support at <a href="mailto:support@campusxi.com"
+          >support@campusxi.com</a
+        > for assistance or refund review.
+      </p>
+    </article>
+
+    <article class="legal-card">
+      <h2>Saved Cards and Shared Content</h2>
+      <p>
+        Users may generate and save performance cards or similar shareable
+        visuals to their own device gallery. Those saves happen at the user's
+        request.
+      </p>
+      <ul class="list">
+        <li>Saved cards are for personal use unless Campus XI expressly allows something broader.</li>
+        <li>Users must not use the app to impersonate others or misuse Campus XI branding.</li>
+      </ul>
+    </article>
+
+    <article class="legal-card">
+      <h2>Availability, Bugs, and Support</h2>
+      <ul class="list">
+        <li>Campus XI may update, suspend, or discontinue features at any time.</li>
+        <li>We do not guarantee uninterrupted service or error-free operation.</li>
+        <li>Third-party outages, store issues, or payment verification problems may affect access.</li>
+        <li>Users should contact support for purchase issues, code issues, or technical problems.</li>
+      </ul>
+    </article>
+
+    <article class="legal-card">
+      <h2>Disclaimers and Limits</h2>
+      <ul class="list">
+        <li>Campus XI provides fantasy football tools and event participation features, not guaranteed outcomes.</li>
+        <li>Premium tools may improve decision-making but do not promise winnings, prizes, or ranking success.</li>
+        <li>To the fullest extent allowed by law, Campus XI is not responsible for indirect or consequential losses arising from use of the app.</li>
+      </ul>
+    </article>
+
+    <article class="legal-card">
+      <h2>Changes to These Terms</h2>
+      <p>
+        We may update these Terms of Use from time to time. Continued use of
+        Campus XI after updated terms take effect means the user accepts the
+        revised terms.
+      </p>
+    </article>
+
+    <article class="legal-card">
+      <h2>Contact</h2>
+      <p>
+        Questions about these Terms can be sent to
+        <a href="mailto:support@campusxi.com">support@campusxi.com</a>.
+      </p>
+    </article>
   </section>
 </SiteLayout>

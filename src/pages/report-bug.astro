@@ -6,87 +6,94 @@ import SiteLayout from "../layouts/SiteLayout.astro";
   title="Report Bug"
   description="Report a Campus XI bug and include screenshots for faster support resolution."
 >
-  <section class="card hero">
-    <p class="badge">Support</p>
-    <h1>Report a Bug</h1>
-    <p>
-      Share what happened and include screenshots if possible. Bug reports are
-      delivered directly to our support email.
-    </p>
+  <section class="hero-panel hero-panel--single">
+    <div class="hero-copy">
+      <p class="eyebrow">Support</p>
+      <h1>Report a Bug</h1>
+      <p class="hero-text">
+        Share what happened and include screenshots if possible.
+      </p>
+    </div>
   </section>
 
-  <section class="card">
-    <h2 class="section-title">Bug Report Form</h2>
+  <section class="section-shell form-shell bug-report-shell">
+    <div class="form-intro">
+      <p class="eyebrow">Bug details</p>
+      <h2>Send a report with enough detail to act on.</h2>
+      <p>Include the platform, the steps, and what you expected to happen.</p>
+    </div>
 
-    <form
-      data-support-form
-      action="/api/support"
-      method="post"
-      enctype="multipart/form-data"
-    >
-      <input type="hidden" name="requestType" value="bug" />
+    <div class="form-card">
+      <form
+        data-support-form
+        action="/api/support"
+        method="post"
+        enctype="multipart/form-data"
+      >
+        <input type="hidden" name="requestType" value="bug" />
 
-      <div class="form-grid">
-        <label>
-          Name
-          <input name="name" required />
-        </label>
+        <div class="form-grid">
+          <label>
+            Name
+            <input name="name" required />
+          </label>
 
-        <label>
-          Email Address
-          <input type="email" name="email" required />
-        </label>
+          <label>
+            Email Address
+            <input type="email" name="email" required />
+          </label>
 
-        <label>
-          Platform
-          <select name="platform" required>
-            <option value="">Select one</option>
-            <option value="iOS">iOS</option>
-            <option value="Android">Android</option>
-            <option value="Web">Web</option>
-          </select>
-        </label>
+          <label>
+            Platform
+            <select name="platform" required>
+              <option value="">Select one</option>
+              <option value="iOS">iOS</option>
+              <option value="Android">Android</option>
+              <option value="Web">Web</option>
+            </select>
+          </label>
 
-        <label>
-          Severity
-          <select name="severity" required>
-            <option value="">Select one</option>
-            <option value="Low">Low</option>
-            <option value="Medium">Medium</option>
-            <option value="High">High</option>
-            <option value="Critical">Critical</option>
-          </select>
-        </label>
+          <label>
+            Severity
+            <select name="severity" required>
+              <option value="">Select one</option>
+              <option value="Low">Low</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+              <option value="Critical">Critical</option>
+            </select>
+          </label>
 
-        <label class="full">
-          What were you doing?
-          <textarea name="steps" required placeholder="Steps to reproduce"
-          ></textarea>
-        </label>
+          <label class="full">
+            What were you doing?
+            <textarea name="steps" required placeholder="Steps to reproduce"
+            ></textarea>
+          </label>
 
-        <label class="full">
-          What happened?
-          <textarea name="actualResult" required placeholder="Describe the bug"
-          ></textarea>
-        </label>
+          <label class="full">
+            What happened?
+            <textarea name="actualResult" required placeholder="Describe the bug"
+            ></textarea>
+          </label>
 
-        <label class="full">
-          What did you expect to happen?
-          <textarea
-            name="expectedResult"
-            required
-            placeholder="Describe expected behavior"></textarea>
-        </label>
+          <label class="full">
+            What did you expect to happen?
+            <textarea
+              name="expectedResult"
+              required
+              placeholder="Describe expected behavior"></textarea>
+          </label>
 
-        <label class="full">
-          Screenshots (optional, up to 3 images, 8MB each)
-          <input type="file" name="screenshots" accept="image/*" multiple />
-        </label>
-      </div>
+          <label class="full">
+            Screenshots (optional, up to 3 images, 8MB each)
+            <input type="file" name="screenshots" accept="image/*" multiple />
+          </label>
+        </div>
 
-      <button type="submit">Send Bug Report</button>
-      <p class="form-status" aria-live="polite"></p>
-    </form>
+        <button type="submit">Send Bug Report</button>
+        <p class="form-status" aria-live="polite"></p>
+      </form>
+    </div>
   </section>
 
   <script type="module" src="/scripts/support-form.js"></script>
