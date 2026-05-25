@@ -1,24 +1,31 @@
 ---
 import SiteLayout from "../layouts/SiteLayout.astro";
 
+const appStoreUrl = "https://apps.apple.com/us/app/campus-xi/id6763406816";
 const playStoreUrl = "https://play.google.com/store/apps/details?id=com.campusxi.app";
 ---
 
 <SiteLayout
   title="Install"
-  description="Install Campus XI from Google Play or get App Store launch updates."
+  description="Install Campus XI from the App Store or Google Play."
 >
   <section class="hero-panel hero-panel--single">
     <div class="hero-copy">
       <p class="eyebrow">Install</p>
-      <h1 class="install-title">Get ready to install Campus XI.</h1>
+      <h1 class="install-title">Install Campus XI.</h1>
       <p class="hero-text">
-        Campus XI is available on Google Play. App Store release updates will
-        appear here when available.
+        Download Campus XI on iPhone or Android and join football events from
+        your phone.
       </p>
 
       <div class="store-grid" aria-label="Store availability">
-        <article class="store-card store-card--apple">
+        <a
+          class="store-card store-card--apple"
+          href={appStoreUrl}
+          target="_blank"
+          rel="noreferrer"
+          aria-label="Download Campus XI on the App Store"
+        >
           <div class="store-card__icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" role="presentation">
               <path
@@ -30,9 +37,9 @@ const playStoreUrl = "https://play.google.com/store/apps/details?id=com.campusxi
           <div class="store-card__body">
             <p class="store-card__label">Download on the</p>
             <h2>App Store</h2>
-            <p>Coming soon.</p>
+            <p>Get the iPhone app.</p>
           </div>
-        </article>
+        </a>
 
         <a
           class="store-card store-card--play"
@@ -58,7 +65,7 @@ const playStoreUrl = "https://play.google.com/store/apps/details?id=com.campusxi
       </div>
 
       <p class="small-note">
-        Need access before launch? Email
+        Questions about installs? Email
         <a href="mailto:support@campusxi.com">support@campusxi.com</a>.
       </p>
     </div>
@@ -77,13 +84,13 @@ const playStoreUrl = "https://play.google.com/store/apps/details?id=com.campusxi
     </article>
 
     <article class="spotlight-card spotlight-card--soft">
-      <p class="eyebrow">Early access</p>
-      <h2>Need help before the stores go live?</h2>
+      <p class="eyebrow">Host games</p>
+      <h2>Want Campus XI at your football event?</h2>
       <p>
-        For pre-launch installs, testing, or rollout questions, send a note to
-        support and include the device type you want to test with.
+        Contact us to add a fantasy leaderboard to your tournament, campus
+        league, or match day.
       </p>
-      <a class="text-link" href="mailto:support@campusxi.com">Email support</a>
+      <a class="text-link" href="mailto:support@campusxi.com?subject=Host%20a%20Campus%20XI%20game">Contact us to host games</a>
     </article>
   </section>
 </SiteLayout>
