@@ -238,6 +238,16 @@ h3 {
     linear-gradient(145deg, rgba(25, 25, 25, 0.98), rgba(6, 6, 6, 0.96));
 }
 
+.section-shell:not(.section-shell--split),
+.legal-card,
+.form-card,
+.spotlight-card,
+.faq-item,
+.rule-card {
+  position: relative;
+  overflow: hidden;
+}
+
 .hero-panel::before {
   content: "";
   position: absolute;
@@ -248,6 +258,32 @@ h3 {
   border: 26px solid rgba(255, 255, 255, 0.04);
 }
 
+.section-shell:not(.section-shell--split)::before,
+.legal-card::before,
+.form-card::before,
+.spotlight-card::before,
+.faq-item::before,
+.rule-card::before {
+  content: "";
+  position: absolute;
+  inset: auto -72px -92px auto;
+  width: 210px;
+  height: 210px;
+  border-radius: 50%;
+  border: 20px solid rgba(255, 255, 255, 0.032);
+  pointer-events: none;
+}
+
+.section-shell:not(.section-shell--split)>*,
+.legal-card>*,
+.form-card>*,
+.spotlight-card>*,
+.faq-item>*,
+.rule-card>* {
+  position: relative;
+  z-index: 1;
+}
+
 .hero-panel--landing {
   min-height: 560px;
   align-items: start;
@@ -255,10 +291,6 @@ h3 {
 
 .home-hero {
   min-height: auto;
-}
-
-.home-hero::before {
-  display: none;
 }
 
 .hero-panel--single {
