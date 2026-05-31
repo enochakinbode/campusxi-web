@@ -129,17 +129,26 @@ export const POST: APIRoute = async ({ request }) => {
 
   if (requestType === 'help') {
     const topic = readText(form, 'topic');
+    const device = readText(form, 'device');
     const message = readText(form, 'message');
 
-    if (!topic || !message) {
+    if (!topic || !device || !message) {
       return json(400, {
         ok: false,
-        error: 'Topic and message are required.'
+        error: 'Topic, device, and message are required.'
       });
     }
 
-    textLines.push(buildLine('Topic', topic), buildLine('Message', message));
-    htmlLines.push(buildHtmlLine('Topic', topic), buildHtmlLine('Message', message));
+    textLines.push(
+      buildLine('Topic', topic),
+      buildLine('Device', device),
+      buildLine('Message', message)
+    );
+    htmlLines.push(
+      buildHtmlLine('Topic', topic),
+      buildHtmlLine('Device', device),
+      buildHtmlLine('Message', message)
+    );
   } else {
     const platform = readText(form, 'platform');
     const severity = readText(form, 'severity');

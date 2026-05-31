@@ -539,6 +539,14 @@ a.store-card:focus-visible {
   padding: var(--section-padding);
 }
 
+.help-faq-shell {
+  scroll-margin-top: 24px;
+}
+
+.help-contact-shell + .help-faq-shell {
+  margin-top: 44px;
+}
+
 .bug-report-shell {
   padding: var(--section-padding);
 }

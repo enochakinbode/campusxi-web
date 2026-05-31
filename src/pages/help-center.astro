@@ -17,7 +17,73 @@ import SiteLayout from "../layouts/SiteLayout.astro";
     </div>
   </section>
 
-  <section class="section-shell help-faq-shell">
+  <section class="section-shell form-shell help-contact-shell">
+    <div class="form-intro">
+      <p class="eyebrow">Direct contact</p>
+      <h2>Send a help request.</h2>
+      <p>This form sends directly to your support flow.</p>
+      <a class="text-link" href="#frequently-asked-questions">
+        See frequently asked questions
+      </a>
+    </div>
+
+    <div class="form-card">
+      <form data-support-form action="/api/support" method="post">
+        <input type="hidden" name="requestType" value="help" />
+
+        <div class="form-grid">
+          <label>
+            Full Name
+            <input name="name" required />
+          </label>
+
+          <label>
+            Email Address
+            <input type="email" name="email" required />
+          </label>
+
+          <label>
+            Topic
+            <select name="topic" required data-prefill="topic">
+              <option value="">Select one</option>
+              <option value="Account">Account</option>
+              <option value="Purchase">Purchase</option>
+              <option value="Gameplay">Gameplay</option>
+              <option value="Other">Other</option>
+            </select>
+          </label>
+
+          <label>
+            Device
+            <select name="device" required>
+              <option value="">Select one</option>
+              <option value="iPhone">iPhone</option>
+              <option value="Android Phone">Android Phone</option>
+              <option value="Tablet">Tablet</option>
+              <option value="Other">Other</option>
+            </select>
+          </label>
+
+          <label class="full">
+            Message
+            <textarea
+              name="message"
+              required
+              data-prefill="message"
+              placeholder="Tell us what you need help with."></textarea>
+          </label>
+        </div>
+
+        <button type="submit">Send Help Request</button>
+        <p class="form-status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+
+  <section
+    class="section-shell help-faq-shell"
+    id="frequently-asked-questions"
+  >
     <div class="section-heading">
       <p class="eyebrow">Frequently Asked Questions</p>
       <h2>Open a question to see the answer.</h2>
@@ -142,54 +208,6 @@ import SiteLayout from "../layouts/SiteLayout.astro";
           rank progression badges, and the most generous action limits.
         </p>
       </details>
-    </div>
-  </section>
-
-  <section class="section-shell form-shell form-shell--spaced help-contact-shell">
-    <div class="form-intro">
-      <p class="eyebrow">Direct contact</p>
-      <h2>Send a help request.</h2>
-      <p>This form sends directly to your support flow.</p>
-    </div>
-
-    <div class="form-card">
-      <form data-support-form action="/api/support" method="post">
-        <input type="hidden" name="requestType" value="help" />
-
-        <div class="form-grid">
-          <label>
-            Full Name
-            <input name="name" required />
-          </label>
-
-          <label>
-            Email Address
-            <input type="email" name="email" required />
-          </label>
-
-          <label class="full">
-            Topic
-            <select name="topic" required>
-              <option value="">Select one</option>
-              <option value="Account">Account</option>
-              <option value="Purchase">Purchase</option>
-              <option value="Gameplay">Gameplay</option>
-              <option value="Other">Other</option>
-            </select>
-          </label>
-
-          <label class="full">
-            Message
-            <textarea
-              name="message"
-              required
-              placeholder="Tell us what you need help with."></textarea>
-          </label>
-        </div>
-
-        <button type="submit">Send Help Request</button>
-        <p class="form-status" aria-live="polite"></p>
-      </form>
     </div>
   </section>
 

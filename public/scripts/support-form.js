@@ -1,6 +1,25 @@
 const forms = document.querySelectorAll('[data-support-form]');
+const supportParams = new URLSearchParams(window.location.search);
+
+const prefillField = (form, key) => {
+  const value = supportParams.get(key)?.trim();
+  if (!value) return;
+
+  const field = form.querySelector(`[data-prefill="${key}"]`);
+  if (field instanceof HTMLSelectElement) {
+    const hasOption = Array.from(field.options).some((option) => option.value === value);
+    if (hasOption) field.value = value;
+    return;
+  }
+
+  if (field instanceof HTMLTextAreaElement || field instanceof HTMLInputElement) {
+    field.value = value;
+  }
+};
 
 for (const form of forms) {
+  prefillField(form, 'topic');
+  prefillField(form, 'message');
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
 
