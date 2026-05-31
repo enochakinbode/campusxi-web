@@ -539,7 +539,8 @@ a.store-card:focus-visible {
   padding: var(--section-padding);
 }
 
-.help-faq-shell {
+.help-faq-shell,
+.help-contact-shell {
   scroll-margin-top: 24px;
 }
 
