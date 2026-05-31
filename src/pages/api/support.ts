@@ -151,12 +151,11 @@ export const POST: APIRoute = async ({ request }) => {
     );
   } else {
     const platform = readText(form, 'platform');
-    const severity = readText(form, 'severity');
     const steps = readText(form, 'steps');
     const actualResult = readText(form, 'actualResult');
     const expectedResult = readText(form, 'expectedResult');
 
-    if (!platform || !severity || !steps || !actualResult || !expectedResult) {
+    if (!platform || !steps || !actualResult || !expectedResult) {
       return json(400, {
         ok: false,
         error: 'Please complete all bug report fields.'
@@ -165,7 +164,6 @@ export const POST: APIRoute = async ({ request }) => {
 
     textLines.push(
       buildLine('Platform', platform),
-      buildLine('Severity', severity),
       buildLine('Steps to Reproduce', steps),
       buildLine('Actual Result', actualResult),
       buildLine('Expected Result', expectedResult),
@@ -174,7 +172,6 @@ export const POST: APIRoute = async ({ request }) => {
 
     htmlLines.push(
       buildHtmlLine('Platform', platform),
-      buildHtmlLine('Severity', severity),
       buildHtmlLine('Steps to Reproduce', steps),
       buildHtmlLine('Actual Result', actualResult),
       buildHtmlLine('Expected Result', expectedResult),
