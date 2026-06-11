@@ -4,7 +4,10 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase/config";
 import AuthGate from "./AuthGate";
 import { assetUrl, formatPrice } from "./eventsUtils";
+import { getPendingPass, savePendingPass, type PendingPass } from "./pendingPassStorage";
 import UserProfileCard from "./UserProfileCard";
+
+const CHECKOUT_ATTEMPT_TTL_MS = 25 * 60 * 1000;
 
 type Offer = {
   label: string;
@@ -26,6 +29,11 @@ type EventDetails = {
   offers: Offer[];
 };
 
+type UserPass = {
+  value: string;
+  source: string;
+};
+
 type EventDetailProps = {
   eventId?: string;
 };
@@ -40,11 +48,19 @@ export default function EventDetail({ eventId }: EventDetailProps) {
 
 function EventDetailContent({ eventId, user }: { eventId: string; user: User }) {
   const [details, setDetails] = useState<EventDetails | null>(null);
+  const [userPass, setUserPass] = useState<UserPass | null>(null);
   const [status, setStatus] = useState<"loading" | "ready" | "missing" | "error">(
     "loading",
   );
   const [checkoutTier, setCheckoutTier] = useState<string | null>(null);
   const [checkoutError, setCheckoutError] = useState("");
+  const [pendingPass, setPendingPass] = useState<PendingPass | null>(null);
+
+  useEffect(() => {
+    if (eventId) {
+      setPendingPass(getPendingPass(eventId));
+    }
+  }, [eventId]);
 
   useEffect(() => {
     let isMounted = true;
@@ -56,9 +72,10 @@ function EventDetailContent({ eventId, user }: { eventId: string; user: User }) 
       }
 
       try {
-        const [detailsSnapshot, passSnapshot] = await Promise.all([
+        const [detailsSnapshot, passSnapshot, userDetailsSnapshot] = await Promise.all([
           getDoc(doc(db, "events", eventId, "app", "details")),
           getDoc(doc(db, "events", eventId, "app", "pass")),
+          getDoc(doc(db, "events", eventId, "user_details", user.uid)),
         ]);
 
         if (!detailsSnapshot.exists()) {
@@ -68,6 +85,8 @@ function EventDetailContent({ eventId, user }: { eventId: string; user: User }) 
 
         const rawDetails = detailsSnapshot.data();
         const pass = passSnapshot.exists() ? passSnapshot.data() : null;
+        const userDetails = userDetailsSnapshot.exists() ? userDetailsSnapshot.data() : {};
+        const currentPass = readUserPass(userDetails);
         const identity = rawDetails.identity ?? {};
         const logo = rawDetails.logo ?? {};
         const logoPath = logo.lightObjectPath ?? "";
@@ -115,6 +134,7 @@ function EventDetailContent({ eventId, user }: { eventId: string; user: User }) 
           eventKey: pass?.eventKey ?? "",
           offers,
         });
+        setUserPass(currentPass);
         setStatus("ready");
       } catch (error) {
         console.error(error);
@@ -157,6 +177,16 @@ function EventDetailContent({ eventId, user }: { eventId: string; user: User }) 
         throw new Error(checkoutData.error ?? "Could not start checkout.");
       }
 
+      savePendingPass({
+        eventId,
+        reference: checkoutData.reference,
+        tier: offer.tier,
+        createdAt: Date.now(),
+        authorizationUrl: checkoutData.authorization_url,
+        accessCode: checkoutData.access_code,
+        paystackProductId: offer.paystackProductId,
+      });
+      setPendingPass(getPendingPass(eventId));
       window.location.href = checkoutData.authorization_url;
     } catch (error) {
       setCheckoutError(
@@ -164,6 +194,33 @@ function EventDetailContent({ eventId, user }: { eventId: string; user: User }) 
       );
       setCheckoutTier(null);
     }
+  }
+
+  async function continueCheckoutAttempt(pendingPass: PendingPass) {
+    setCheckoutError("");
+
+    const matchingOffer = details?.offers.find(
+      (offer) =>
+        offer.paystackProductId === pendingPass.paystackProductId ||
+        offer.tier === pendingPass.tier,
+    );
+
+    if (matchingOffer && !matchingOffer.active) {
+      setCheckoutError("This checkout attempt is no longer available. Please choose another pass below.");
+      return;
+    }
+
+    if (isFreshCheckoutAttempt(pendingPass) && pendingPass.authorizationUrl) {
+      window.location.href = pendingPass.authorizationUrl;
+      return;
+    }
+
+    if (!matchingOffer) {
+      setCheckoutError("This checkout attempt is no longer available. Please choose a pass below.");
+      return;
+    }
+
+    await startCheckout(matchingOffer);
   }
 
   if (status === "loading") {
@@ -178,6 +235,13 @@ function EventDetailContent({ eventId, user }: { eventId: string; user: User }) 
     return <EventsState label="Failed to load event. Please refresh this page." tone="error" />;
   }
 
+  const currentPassRank = passRank(userPass?.value);
+  const visibleOffers = details.offers.filter(
+    (offer) => passRank(offer.tier) > currentPassRank,
+  );
+  const hasPaidPass = currentPassRank >= passRank("bronze");
+  const passLabel = hasPaidPass ? formatPassLabel(userPass?.value ?? "") : "No pass yet";
+
   return (
     <section className="events-stack">
       <header className="event-detail-topbar">
@@ -187,7 +251,7 @@ function EventDetailContent({ eventId, user }: { eventId: string; user: User }) 
         <UserProfileCard user={user} />
       </header>
 
-      <article className="event-detail-panel">
+      <article className="event-detail-panel event-detail-panel--dashboard">
         <div className="event-detail-panel__logo">
           {details.logoUrl ? (
             <img src={details.logoUrl} alt={`${details.eventName} logo`} />
@@ -199,6 +263,10 @@ function EventDetailContent({ eventId, user }: { eventId: string; user: User }) 
         <div className="event-detail-panel__copy">
           <p className="eyebrow">{details.shortName}</p>
           <h1>{details.eventName}</h1>
+          <p className="event-detail-panel__summary">
+            Manage your tournament access, finish a pending payment, or upgrade
+            your pass for this event.
+          </p>
 
           <dl className="event-meta-grid">
             <div>
@@ -207,21 +275,55 @@ function EventDetailContent({ eventId, user }: { eventId: string; user: User }) 
             </div>
           </dl>
         </div>
+
+        <aside className="pass-status-panel">
+          <p className="eyebrow">Pass status</p>
+          <strong>{passLabel}</strong>
+          {hasPaidPass ? (
+            <p>
+              Your pass should now be reflecting in the app. If you have not
+              completed registration, go back to the app to complete it.
+            </p>
+          ) : (
+            <p>Select a pass below to unlock premium access for this event.</p>
+          )}
+
+          {pendingPass ? (
+            <button
+              className="pending-pass-card pending-pass-card--compact"
+              disabled={checkoutTier === pendingPass.tier}
+              onClick={() => continueCheckoutAttempt(pendingPass)}
+              type="button"
+            >
+              <span>
+                <strong>Continue {formatPassLabel(pendingPass.tier)} payment</strong>
+                <small>Return to Paystack to finish payment before verification.</small>
+              </span>
+              <b>{checkoutTier === pendingPass.tier ? "Opening..." : "Continue"}</b>
+            </button>
+          ) : null}
+        </aside>
       </article>
 
       <section className="offers-panel">
         <div className="events-section-heading">
           <p className="eyebrow">Passes</p>
-          <h2>Available passes</h2>
+          <h2>{hasPaidPass ? "Upgrade your pass" : "Available passes"}</h2>
         </div>
+
+        {hasPaidPass ? (
+          <p className="events-alert events-alert--success">
+            You have {formatPassLabel(userPass?.value ?? "")}. Lower pass tiers are hidden.
+          </p>
+        ) : null}
 
         {checkoutError ? (
           <p className="events-alert events-alert--error">{checkoutError}</p>
         ) : null}
 
-        {details.offers.length ? (
+        {visibleOffers.length ? (
           <div className="offer-list">
-            {details.offers.map((offer) => (
+            {visibleOffers.map((offer) => (
               <article className="offer-row" key={`${offer.tier}-${offer.paystackProductId}`}>
                 <div className="offer-row__content">
                   <h3>{offer.label}</h3>
@@ -254,7 +356,11 @@ function EventDetailContent({ eventId, user }: { eventId: string; user: User }) 
             ))}
           </div>
         ) : (
-          <p className="events-muted">No payment offers available for this event.</p>
+          <p className="events-muted">
+            {hasPaidPass
+              ? "There are no higher pass upgrades available for this event."
+              : "No payment offers available for this event."}
+          </p>
         )}
       </section>
     </section>
@@ -300,6 +406,43 @@ function offerSummary(offer: Record<string, unknown>) {
 
 function tierValue(value: unknown) {
   return String(value ?? "").trim().toLowerCase();
+}
+
+function readUserPass(userDetails: Record<string, unknown>): UserPass | null {
+  const pass = userDetails.pass;
+
+  if (!pass || typeof pass !== "object") {
+    return null;
+  }
+
+  const passRecord = pass as Record<string, unknown>;
+  const value = tierValue(passRecord.value);
+  const source = String(passRecord.source ?? "").trim().toLowerCase();
+
+  if (!value || value === "none") {
+    return null;
+  }
+
+  return { value, source };
+}
+
+function passRank(tier: unknown) {
+  const ranks: Record<string, number> = {
+    none: 0,
+    bronze: 1,
+    silver: 2,
+    gold: 3,
+  };
+
+  return ranks[tierValue(tier)] ?? 0;
+}
+
+function formatPassLabel(tier: string) {
+  return passPlanDefaults(tierValue(tier)).label;
+}
+
+function isFreshCheckoutAttempt(pendingPass: PendingPass) {
+  return Date.now() - pendingPass.createdAt < CHECKOUT_ATTEMPT_TTL_MS;
 }
 
 function passPlanDefaults(tier: string) {

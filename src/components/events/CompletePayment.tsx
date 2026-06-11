@@ -3,6 +3,7 @@ import type { User } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase/config";
 import AuthGate from "./AuthGate";
+import { removePendingPass } from "./pendingPassStorage";
 
 type CompletePaymentProps = {
   eventId?: string | null;
@@ -40,7 +41,7 @@ function CompletePaymentContent({
     "ready",
   );
   const [message, setMessage] = useState(
-    "Your payment has been received by Paystack. Complete this step to secure your tournament pass.",
+    "Paystack sent you back to Campus XI. Verify this transaction to secure your tournament pass.",
   );
   const [confirmedTier, setConfirmedTier] = useState("");
 
@@ -59,7 +60,7 @@ function CompletePaymentContent({
     }
 
     setStatus("working");
-    setMessage("Completing your pass...");
+    setMessage("Verifying your payment...");
 
     try {
       const idToken = await user.getIdToken();
@@ -88,6 +89,7 @@ function CompletePaymentContent({
         setConfirmedTier(confirmedPass.tier);
       }
 
+      removePendingPass(eventId, reference);
       setStatus("success");
       setMessage(
         confirmedPass.isPaid
@@ -105,6 +107,7 @@ function CompletePaymentContent({
       const errorMessage = error instanceof Error ? error.message : "";
 
       if (code === "already-exists" || errorMessage.includes("already-exists")) {
+        removePendingPass(eventId, reference);
         setStatus("success");
         setMessage("Pass already secured. Redirecting to your event...");
         setTimeout(() => {
@@ -114,7 +117,7 @@ function CompletePaymentContent({
       }
 
       setStatus("error");
-      setMessage("We could not complete this pass yet. Please try again.");
+      setMessage("We could not verify this payment yet. Please try again.");
     }
   }
 
@@ -131,7 +134,7 @@ function CompletePaymentContent({
         </div>
 
         <p className="eyebrow">Paystack return</p>
-        <h1>Complete your pass</h1>
+        <h1>Verify your pass</h1>
         <p>{message}</p>
 
         <dl className="completion-reference">
@@ -151,7 +154,7 @@ function CompletePaymentContent({
           onClick={completePayment}
           type="button"
         >
-          {isWorking ? "Completing..." : isDone ? "Completed" : "Complete"}
+          {isWorking ? "Verifying..." : isDone ? "Verified" : "Verify payment"}
         </button>
       </article>
     </section>
