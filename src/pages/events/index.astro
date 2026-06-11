@@ -1,0 +1,8 @@
+---
+import EventsLayout from "../../layouts/EventsLayout.astro";
+import EventsList from "../../components/events/EventsList";
+---
+
+<EventsLayout title="Events">
+    <EventsList client:load />
+</EventsLayout>

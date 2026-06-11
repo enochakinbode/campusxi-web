@@ -1,0 +1,10 @@
+---
+import EventsLayout from "../../layouts/EventsLayout.astro";
+import EventDetail from "../../components/events/EventDetail";
+
+const { eventId } = Astro.params;
+---
+
+<EventsLayout title="Event Details">
+    <EventDetail eventId={eventId} client:load />
+</EventsLayout>

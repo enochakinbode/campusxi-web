@@ -1,0 +1,11 @@
+---
+import SiteLayout from "./SiteLayout.astro";
+
+const { title = "Events" } = Astro.props;
+---
+
+<SiteLayout title={title}>
+    <main class="events-shell">
+        <slot />
+    </main>
+</SiteLayout>

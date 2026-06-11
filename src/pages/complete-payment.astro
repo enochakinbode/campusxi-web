@@ -1,0 +1,13 @@
+---
+import EventsLayout from "../layouts/EventsLayout.astro";
+import CompletePayment from "../components/events/CompletePayment";
+
+const { searchParams } = Astro.url;
+const eventId = searchParams.get("eventId");
+const reference = searchParams.get("reference");
+const tier = searchParams.get("tier");
+---
+
+<EventsLayout title="Complete Payment">
+    <CompletePayment eventId={eventId} reference={reference} tier={tier} client:load />
+</EventsLayout>
