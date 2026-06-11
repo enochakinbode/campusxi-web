@@ -81,13 +81,19 @@ function EventsContent({ user }: { user: User }) {
   return (
     <section className="events-stack">
       <header className="events-hero">
-        <div>
+        <div className="events-hero__copy">
           <p className="eyebrow">Events</p>
           <h1>Open events</h1>
           <p>Choose an event and buy the tournament pass attached to it.</p>
         </div>
 
-        <UserProfileCard user={user} />
+        <div className="events-hero__side">
+          <div className="events-hero__stat">
+            <span>Open events</span>
+            <strong>{status === "ready" ? events.length : "-"}</strong>
+          </div>
+          <UserProfileCard user={user} />
+        </div>
       </header>
 
       {status === "loading" ? <LoadingState label="Loading events..." /> : null}
@@ -101,6 +107,7 @@ function EventsContent({ user }: { user: User }) {
           {events.map((event) => (
             <a className="event-tile" href={`/events/${event.id}`} key={event.id}>
               <div className="event-tile__media">
+                <span className="status-badge">Open</span>
                 {event.logoUrl ? (
                   <img src={event.logoUrl} alt={`${event.eventName} logo`} />
                 ) : (
@@ -109,8 +116,11 @@ function EventsContent({ user }: { user: User }) {
               </div>
 
               <div className="event-tile__body">
-                <p>{event.shortName}</p>
-                <h2>{event.eventName}</h2>
+                <div>
+                  <p>{event.shortName}</p>
+                  <h2>{event.eventName}</h2>
+                </div>
+                <span className="event-tile__cta">View event</span>
               </div>
             </a>
           ))}

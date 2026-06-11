@@ -1,8 +1,10 @@
 ---
-import EventsLayout from "../../layouts/EventsLayout.astro";
+import SiteLayout from "../../layouts/SiteLayout.astro";
 import EventsList from "../../components/events/EventsList";
 ---
 
-<EventsLayout title="Events">
+<SiteLayout title="Events">
+  <div class="events-shell">
     <EventsList client:load />
-</EventsLayout>
+  </div>
+</SiteLayout>

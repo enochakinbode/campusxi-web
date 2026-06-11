@@ -1,5 +1,5 @@
 ---
-import EventsLayout from "../layouts/EventsLayout.astro";
+import SiteLayout from "../layouts/SiteLayout.astro";
 import CompletePayment from "../components/events/CompletePayment";
 
 const { searchParams } = Astro.url;
@@ -8,6 +8,8 @@ const reference = searchParams.get("reference");
 const tier = searchParams.get("tier");
 ---
 
-<EventsLayout title="Complete Payment">
+<SiteLayout title="Complete Payment">
+  <div class="events-shell">
     <CompletePayment eventId={eventId} reference={reference} tier={tier} client:load />
-</EventsLayout>
+  </div>
+</SiteLayout>

@@ -1,10 +1,12 @@
 ---
-import EventsLayout from "../../layouts/EventsLayout.astro";
+import SiteLayout from "../../layouts/SiteLayout.astro";
 import EventDetail from "../../components/events/EventDetail";
 
 const { eventId } = Astro.params;
 ---
 
-<EventsLayout title="Event Details">
+<SiteLayout title="Event Details">
+  <div class="events-shell">
     <EventDetail eventId={eventId} client:load />
-</EventsLayout>
+  </div>
+</SiteLayout>
