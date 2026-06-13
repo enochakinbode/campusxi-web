@@ -7,8 +7,6 @@ import { assetUrl, formatPrice } from "./eventsUtils";
 import { getPendingPass, savePendingPass, type PendingPass } from "./pendingPassStorage";
 import UserProfileCard from "./UserProfileCard";
 
-const CHECKOUT_ATTEMPT_TTL_MS = 25 * 60 * 1000;
-
 type Offer = {
   label: string;
   tier: string;
@@ -199,7 +197,7 @@ function EventDetailContent({ eventId, user }: { eventId: string; user: User }) 
   async function continueCheckoutAttempt(pendingPass: PendingPass) {
     setCheckoutError("");
 
-    const matchingOffer = details?.offers.find(
+  const matchingOffer = details?.offers.find(
       (offer) =>
         offer.paystackProductId === pendingPass.paystackProductId ||
         offer.tier === pendingPass.tier,
@@ -207,11 +205,6 @@ function EventDetailContent({ eventId, user }: { eventId: string; user: User }) 
 
     if (matchingOffer && !matchingOffer.active) {
       setCheckoutError("This checkout attempt is no longer available. Please choose another pass below.");
-      return;
-    }
-
-    if (isFreshCheckoutAttempt(pendingPass) && pendingPass.authorizationUrl) {
-      window.location.href = pendingPass.authorizationUrl;
       return;
     }
 
@@ -439,10 +432,6 @@ function passRank(tier: unknown) {
 
 function formatPassLabel(tier: string) {
   return passPlanDefaults(tierValue(tier)).label;
-}
-
-function isFreshCheckoutAttempt(pendingPass: PendingPass) {
-  return Date.now() - pendingPass.createdAt < CHECKOUT_ATTEMPT_TTL_MS;
 }
 
 function passPlanDefaults(tier: string) {

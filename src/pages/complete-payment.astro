@@ -4,12 +4,19 @@ import CompletePayment from "../components/events/CompletePayment";
 
 const { searchParams } = Astro.url;
 const eventId = searchParams.get("eventId");
-const reference = searchParams.get("reference");
+const reference = searchParams.get("reference") || searchParams.get("trxref");
 const tier = searchParams.get("tier");
+const callbackStatus = searchParams.get("status");
 ---
 
 <SiteLayout title="Complete Payment">
   <div class="events-shell">
-    <CompletePayment eventId={eventId} reference={reference} tier={tier} client:load />
+    <CompletePayment
+      eventId={eventId}
+      reference={reference}
+      tier={tier}
+      callbackStatus={callbackStatus}
+      client:load
+    />
   </div>
 </SiteLayout>

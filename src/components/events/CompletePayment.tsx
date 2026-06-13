@@ -9,9 +9,15 @@ type CompletePaymentProps = {
   eventId?: string | null;
   reference?: string | null;
   tier?: string | null;
+  callbackStatus?: string | null;
 };
 
-export default function CompletePayment({ eventId, reference, tier }: CompletePaymentProps) {
+export default function CompletePayment({
+  eventId,
+  reference,
+  tier,
+  callbackStatus,
+}: CompletePaymentProps) {
   return (
     <AuthGate>
       {(user) => (
@@ -19,6 +25,7 @@ export default function CompletePayment({ eventId, reference, tier }: CompletePa
           eventId={eventId ?? ""}
           reference={reference ?? ""}
           tier={tier ?? ""}
+          callbackStatus={callbackStatus ?? ""}
           user={user}
         />
       )}
@@ -30,11 +37,13 @@ function CompletePaymentContent({
   eventId,
   reference,
   tier,
+  callbackStatus,
   user,
 }: {
   eventId: string;
   reference: string;
   tier: string;
+  callbackStatus: string;
   user: User;
 }) {
   const [status, setStatus] = useState<"ready" | "working" | "success" | "error">(
@@ -49,6 +58,24 @@ function CompletePaymentContent({
     if (!eventId || !reference) {
       setStatus("error");
       setMessage("Invalid or missing transaction details.");
+    }
+
+    if (!callbackStatus || status === "success") {
+      return;
+    }
+
+    const statusValue = callbackStatus.trim().toLowerCase();
+
+    if (statusValue === "success") {
+      void completePayment();
+      return;
+    }
+
+    if (statusValue === "cancelled" || statusValue === "failed") {
+      setStatus("error");
+      setMessage(
+        "Payment was not completed. Use the button below if the charge succeeded or try again from the event page.",
+      );
     }
   }, [eventId, reference]);
 
