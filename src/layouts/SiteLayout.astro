@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import UserProfileCard from "../components/events/UserProfileCard";
 
 interface Props {
   title: string;
@@ -22,6 +23,7 @@ const navItems = [
 ];
 
 const currentPath = Astro.url.pathname;
+const isEventsRoute = currentPath === "/events" || currentPath.startsWith("/events/");
 ---
 
 <!doctype html>
@@ -75,6 +77,9 @@ const currentPath = Astro.url.pathname;
           ))
         }
       </nav>
+      {isEventsRoute ? (
+        <UserProfileCard client:load className="profile-card--navbar" openMode="dropdown" />
+      ) : null}
     </header>
 
     <main class="page-wrap">

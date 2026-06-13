@@ -4,6 +4,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase/config";
 import AuthGate from "./AuthGate";
 import { removePendingPass } from "./pendingPassStorage";
+import InstallAppLinks from "./InstallAppLinks";
 
 type CompletePaymentProps = {
   eventId?: string | null;
@@ -183,6 +184,14 @@ function CompletePaymentContent({
         >
           {isWorking ? "Verifying..." : isDone ? "Verified" : "Verify payment"}
         </button>
+
+        {isDone ? (
+          <InstallAppLinks
+            includeHeading
+            heading="Install Campus XI"
+            buttonClassName="events-button events-button--full"
+          />
+        ) : null}
       </article>
     </section>
   );

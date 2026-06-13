@@ -842,13 +842,34 @@ button[disabled] {
     position: relative;
     flex-wrap: wrap;
     align-items: center;
+    justify-content: flex-start;
     row-gap: 10px;
     padding-top: 8px;
     padding-bottom: 4px;
   }
 
+  .profile-card--navbar {
+    order: 2;
+    margin-left: auto;
+    z-index: 8;
+  }
+
+  .profile-card--navbar .profile-card__summary {
+    min-height: 36px;
+    padding: 3px 6px;
+    border-radius: 999px;
+    gap: 8px;
+  }
+
+  .profile-card--navbar .profile-card__avatar {
+    width: 34px;
+    height: 34px;
+    font-size: 0.9rem;
+  }
+
   .nav-toggle {
     display: inline-flex;
+    order: 3;
     margin-left: auto;
   }
 
@@ -874,6 +895,7 @@ button[disabled] {
       opacity 180ms ease,
       transform 180ms ease,
       visibility 180ms ease;
+    order: 4;
   }
 
   .main-nav a {
@@ -1187,9 +1209,9 @@ button[disabled] {
 
 .event-detail-topbar {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
   gap: 16px;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .profile-card {
@@ -1207,6 +1229,14 @@ button[disabled] {
   align-items: center;
   gap: 12px;
   min-width: 0;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
 }
 
 .profile-card__avatar {
@@ -1234,10 +1264,78 @@ button[disabled] {
   color: var(--muted);
 }
 
+.profile-card__email {
+  margin: 0;
+  color: rgba(249, 243, 255, 0.78);
+}
+
 .profile-card__actions {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+}
+
+.profile-card--navbar {
+  position: relative;
+  width: auto;
+  min-width: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+}
+
+.profile-card--navbar .profile-card__summary {
+  width: auto;
+  padding: 4px 8px;
+  border-radius: 999px;
+}
+
+.profile-card--navbar .profile-card__email {
+  margin-top: 0;
+}
+
+.profile-card--navbar .profile-card__actions {
+  width: 100%;
+}
+
+.profile-card--open {
+  border-color: rgba(197, 93, 255, 0.36);
+  background: rgba(197, 93, 255, 0.12);
+}
+
+.profile-card--navbar.profile-card--open {
+  border-color: transparent;
+  background: transparent;
+}
+
+.profile-card__popover {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 25;
+  min-width: 240px;
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(23, 16, 25, 0.92);
+  backdrop-filter: blur(10px);
+}
+
+.profile-card__popover .profile-card__actions {
+  width: 100%;
+}
+
+.profile-card__popover .profile-card__button {
+  width: 100%;
+}
+
+.profile-card__chevron {
+  margin-left: auto;
+  font-size: 0.9rem;
+  opacity: 0.78;
 }
 
 .profile-card__button {
@@ -1267,6 +1365,108 @@ button[disabled] {
   margin: 0;
   color: #ffd6de;
   font-size: 0.9rem;
+}
+
+.pending-purchase-notice {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: auto;
+  max-width: min(620px, 72vw);
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 188, 92, 0.22);
+  background: rgba(255, 188, 92, 0.12);
+  color: #fff;
+  text-align: left;
+  font: inherit;
+}
+
+.pending-purchase-notice--warning {
+  color: #fff7e8;
+}
+
+.pending-purchase-notice span {
+  display: block;
+}
+
+.pending-purchase-notice strong {
+  display: block;
+  font-size: 0.95rem;
+}
+
+.pending-purchase-notice small {
+  display: block;
+  margin-top: 4px;
+  color: rgba(249, 243, 255, 0.72);
+}
+
+.pending-purchase-notice__cta {
+  flex-shrink: 0;
+  color: #ffd9a1;
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.pending-purchase-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+}
+
+.pending-purchase-overlay__backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background: rgba(7, 5, 10, 0.62);
+  cursor: pointer;
+}
+
+.pending-purchase-overlay__panel {
+  position: relative;
+  z-index: 1;
+  width: min(560px, 92vw);
+  max-height: min(75vh, 560px);
+  padding: 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(18, 12, 22, 0.98);
+  backdrop-filter: blur(10px);
+  overflow: auto;
+  display: grid;
+  gap: 12px;
+}
+
+.pending-purchase-overlay__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.pending-purchase-overlay__header h2 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.pending-purchase-overlay__intro {
+  margin: 0;
+}
+
+.pending-purchase-overlay__list {
+  display: grid;
+  gap: 10px;
+}
+
+.pending-purchase-overlay__close {
+  min-height: 34px;
+  padding: 6px 10px;
 }
 
 .event-grid {
@@ -1316,13 +1516,12 @@ button[disabled] {
 }
 
 .event-detail-panel__logo {
-  width: min(100%, 280px);
-  min-height: 220px;
-  border-radius: 22px;
-  background:
-    radial-gradient(circle at center, rgba(255, 255, 255, 0.14), transparent 58%),
-    rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  width: auto;
+  min-height: 0;
+  border-radius: 0;
+  background: transparent;
+  border: 0;
+  padding: 0;
 }
 
 .event-tile__media img,
@@ -1333,8 +1532,11 @@ button[disabled] {
 }
 
 .event-detail-panel__logo img {
-  width: min(100%, 230px);
-  max-height: 180px;
+  width: auto;
+  max-width: min(230px, 100%);
+  max-height: 230px;
+  object-fit: contain;
+}
 }
 
 .event-tile__media > span:not(.status-badge),
@@ -1438,7 +1640,7 @@ button[disabled] {
 }
 
 .event-detail-panel--dashboard {
-  grid-template-columns: minmax(190px, 0.28fr) minmax(0, 0.42fr) minmax(260px, 0.3fr);
+  grid-template-columns: minmax(190px, 0.34fr) minmax(0, 0.66fr);
   align-items: stretch;
 }
 
@@ -1599,6 +1801,17 @@ button[disabled] {
     rgba(255, 255, 255, 0.055);
 }
 
+.offer-row--owned {
+  border-color: rgba(107, 228, 176, 0.45);
+  background:
+    linear-gradient(180deg, rgba(107, 228, 176, 0.16), transparent),
+    rgba(107, 228, 176, 0.06);
+}
+
+.offer-row--owned h3 {
+  color: rgba(198, 255, 223, 0.98);
+}
+
 .offer-row h3 {
   margin-bottom: 6px;
 }
@@ -1642,6 +1855,29 @@ button[disabled] {
   height: 7px;
   border-radius: 999px;
   background: var(--success);
+}
+
+.offer-row__owned-note {
+  margin: 12px 0 0;
+  display: grid;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(185, 255, 216, 0.45);
+  background: rgba(16, 95, 62, 0.28);
+  color: rgba(198, 255, 223, 0.98);
+  line-height: 1.45;
+}
+
+.offer-row__owned-note strong {
+  color: #b9ffd8;
+}
+
+.offer-row__owned-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  color: #f8fffb;
 }
 
 .completion-card {
@@ -1773,9 +2009,59 @@ button[disabled] {
     gap: 12px;
   }
 
+  .pending-purchase-notice {
+    width: 100%;
+    max-width: none;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    border-radius: 12px;
+    padding: 10px;
+    background: rgba(255, 188, 92, 0.14);
+    border-color: rgba(255, 188, 92, 0.3);
+  }
+
+  .pending-purchase-notice__cta {
+    margin-left: 0;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 217, 161, 0.52);
+    background: rgba(255, 217, 161, 0.14);
+    color: #ffd9a1;
+    text-align: center;
+    min-width: 90px;
+  }
+
+  .pending-purchase-notice strong {
+    font-size: 0.9rem;
+  }
+
+  .pending-purchase-notice small {
+    font-size: 0.84rem;
+    line-height: 1.35;
+  }
+
+  .pending-purchase-overlay__panel {
+    width: calc(100% - 24px);
+    max-height: 84vh;
+    padding: 16px;
+  }
+
   .profile-card {
     width: 100%;
     border-radius: 18px;
+  }
+
+  .profile-card--navbar {
+    width: auto;
+    border-radius: 0;
+    padding: 0;
+    background: transparent;
+    border: 0;
+  }
+
+  .profile-card--navbar .profile-card__summary {
+    padding: 4px;
   }
 
   .profile-card strong,
@@ -1830,13 +2116,16 @@ button[disabled] {
   }
 
   .event-detail-panel__logo {
-    width: 100%;
-    min-height: 150px;
-    border-radius: 18px;
+    width: auto;
+    min-height: 0;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
   }
 
   .event-detail-panel__logo img {
-    max-height: 118px;
+    max-height: 170px;
   }
 
   .offers-panel {

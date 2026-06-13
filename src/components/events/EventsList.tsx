@@ -4,7 +4,6 @@ import type { User } from "firebase/auth";
 import { db } from "../../firebase/config";
 import AuthGate from "./AuthGate";
 import { assetUrl } from "./eventsUtils";
-import UserProfileCard from "./UserProfileCard";
 
 type EventCard = {
   id: string;
@@ -21,7 +20,7 @@ export default function EventsList() {
   );
 }
 
-function EventsContent({ user }: { user: User }) {
+function EventsContent({ user: _user }: { user: User }) {
   const [events, setEvents] = useState<EventCard[]>([]);
   const [status, setStatus] = useState<"loading" | "ready" | "empty" | "error">(
     "loading",
@@ -92,7 +91,6 @@ function EventsContent({ user }: { user: User }) {
             <span>Open events</span>
             <strong>{status === "ready" ? events.length : "-"}</strong>
           </div>
-          <UserProfileCard user={user} />
         </div>
       </header>
 

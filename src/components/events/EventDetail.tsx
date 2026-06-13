@@ -4,8 +4,12 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase/config";
 import AuthGate from "./AuthGate";
 import { assetUrl, formatPrice } from "./eventsUtils";
-import { getPendingPass, savePendingPass, type PendingPass } from "./pendingPassStorage";
-import UserProfileCard from "./UserProfileCard";
+import {
+  getPendingPasses,
+  savePendingPass,
+  type PendingPass,
+} from "./pendingPassStorage";
+import InstallAppLinks from "./InstallAppLinks";
 
 type Offer = {
   label: string;
@@ -52,13 +56,34 @@ function EventDetailContent({ eventId, user }: { eventId: string; user: User }) 
   );
   const [checkoutTier, setCheckoutTier] = useState<string | null>(null);
   const [checkoutError, setCheckoutError] = useState("");
-  const [pendingPass, setPendingPass] = useState<PendingPass | null>(null);
+  const [pendingPasses, setPendingPasses] = useState<PendingPass[]>([]);
+  const [isPendingPurchasesOpen, setIsPendingPurchasesOpen] = useState(false);
 
   useEffect(() => {
     if (eventId) {
-      setPendingPass(getPendingPass(eventId));
+      setPendingPasses(
+        getPendingPasses().filter((pendingPass) => pendingPass.eventId === eventId),
+      );
     }
   }, [eventId]);
+
+  useEffect(() => {
+    if (!isPendingPurchasesOpen) {
+      return;
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsPendingPurchasesOpen(false);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isPendingPurchasesOpen]);
 
   useEffect(() => {
     let isMounted = true;
@@ -184,7 +209,9 @@ function EventDetailContent({ eventId, user }: { eventId: string; user: User }) 
         accessCode: checkoutData.access_code,
         paystackProductId: offer.paystackProductId,
       });
-      setPendingPass(getPendingPass(eventId));
+      setPendingPasses(
+        getPendingPasses().filter((pendingPass) => pendingPass.eventId === eventId),
+      );
       window.location.href = checkoutData.authorization_url;
     } catch (error) {
       setCheckoutError(
@@ -229,11 +256,9 @@ function EventDetailContent({ eventId, user }: { eventId: string; user: User }) 
   }
 
   const currentPassRank = passRank(userPass?.value);
-  const visibleOffers = details.offers.filter(
-    (offer) => passRank(offer.tier) > currentPassRank,
-  );
+  const primaryPendingPass = pendingPasses[0] ?? null;
+  const visibleOffers = details.offers;
   const hasPaidPass = currentPassRank >= passRank("bronze");
-  const passLabel = hasPaidPass ? formatPassLabel(userPass?.value ?? "") : "No pass yet";
 
   return (
     <section className="events-stack">
@@ -241,7 +266,64 @@ function EventDetailContent({ eventId, user }: { eventId: string; user: User }) 
         <a className="events-back-link" href="/events">
           Back to events
         </a>
-        <UserProfileCard user={user} />
+        {primaryPendingPass ? (
+          <>
+            <button
+              className="pending-purchase-notice pending-purchase-notice--warning"
+              type="button"
+              onClick={() => setIsPendingPurchasesOpen(true)}
+            >
+              <span>
+                <strong>Continue {formatPassLabel(primaryPendingPass.tier)} payment</strong>
+                <small>Return to Paystack to finish payment before verification.</small>
+              </span>
+              <span className="pending-purchase-notice__cta">Continue</span>
+            </button>
+
+            {isPendingPurchasesOpen ? (
+              <div className="pending-purchase-overlay" role="dialog" aria-label="Pending purchases">
+                <button
+                  className="pending-purchase-overlay__backdrop"
+                  type="button"
+                  onClick={() => setIsPendingPurchasesOpen(false)}
+                  aria-label="Close pending purchases"
+                />
+                <aside className="pending-purchase-overlay__panel">
+                  <header className="pending-purchase-overlay__header">
+                    <h2>Pending purchases</h2>
+                    <button
+                      className="events-button pending-purchase-overlay__close"
+                      type="button"
+                      onClick={() => setIsPendingPurchasesOpen(false)}
+                    >
+                      Close
+                    </button>
+                  </header>
+                  <p className="pending-purchase-overlay__intro">
+                    Select a purchase to continue to Paystack before verification.
+                  </p>
+                  <div className="pending-purchase-overlay__list">
+                    {pendingPasses.map((purchase) => (
+                      <button
+                        key={purchase.reference}
+                        className="pending-pass-card pending-pass-card--compact"
+                        disabled={checkoutTier === purchase.tier}
+                        onClick={() => continueCheckoutAttempt(purchase)}
+                        type="button"
+                      >
+                        <span>
+                          <strong>Continue {formatPassLabel(purchase.tier)} payment</strong>
+                          <small>Reference: {purchase.reference}</small>
+                        </span>
+                        <b>{checkoutTier === purchase.tier ? "Opening..." : "Continue"}</b>
+                      </button>
+                    ))}
+                  </div>
+                </aside>
+              </div>
+            ) : null}
+          </>
+        ) : null}
       </header>
 
       <article className="event-detail-panel event-detail-panel--dashboard">
@@ -261,98 +343,82 @@ function EventDetailContent({ eventId, user }: { eventId: string; user: User }) 
             your pass for this event.
           </p>
 
-          <dl className="event-meta-grid">
-            <div>
-              <dt>Event ID</dt>
-              <dd>{details.identityId}</dd>
-            </div>
-          </dl>
         </div>
 
-        <aside className="pass-status-panel">
-          <p className="eyebrow">Pass status</p>
-          <strong>{passLabel}</strong>
-          {hasPaidPass ? (
-            <p>
-              Your pass should now be reflecting in the app. If you have not
-              completed registration, go back to the app to complete it.
-            </p>
-          ) : (
-            <p>Select a pass below to unlock premium access for this event.</p>
-          )}
-
-          {pendingPass ? (
-            <button
-              className="pending-pass-card pending-pass-card--compact"
-              disabled={checkoutTier === pendingPass.tier}
-              onClick={() => continueCheckoutAttempt(pendingPass)}
-              type="button"
-            >
-              <span>
-                <strong>Continue {formatPassLabel(pendingPass.tier)} payment</strong>
-                <small>Return to Paystack to finish payment before verification.</small>
-              </span>
-              <b>{checkoutTier === pendingPass.tier ? "Opening..." : "Continue"}</b>
-            </button>
-          ) : null}
-        </aside>
       </article>
 
       <section className="offers-panel">
         <div className="events-section-heading">
           <p className="eyebrow">Passes</p>
-          <h2>{hasPaidPass ? "Upgrade your pass" : "Available passes"}</h2>
+          <h2>Passes</h2>
         </div>
-
-        {hasPaidPass ? (
-          <p className="events-alert events-alert--success">
-            You have {formatPassLabel(userPass?.value ?? "")}. Lower pass tiers are hidden.
-          </p>
-        ) : null}
 
         {checkoutError ? (
           <p className="events-alert events-alert--error">{checkoutError}</p>
         ) : null}
 
         {visibleOffers.length ? (
-          <div className="offer-list">
+            <div className="offer-list">
             {visibleOffers.map((offer) => (
-              <article className="offer-row" key={`${offer.tier}-${offer.paystackProductId}`}>
+              <article
+                className={`offer-row ${
+                  hasPaidPass && passRank(offer.tier) <= currentPassRank
+                    ? "offer-row--owned"
+                    : ""
+                }`}
+                key={`${offer.tier}-${offer.paystackProductId}`}
+              >
                 <div className="offer-row__content">
-                  <h3>{offer.label}</h3>
-                  <p>{offer.summary}</p>
-                  {offer.perks.length ? (
-                    <ul className="offer-perks">
-                      {offer.perks.map((perk) => (
-                        <li key={perk}>{perk}</li>
-                      ))}
-                    </ul>
-                  ) : null}
+                  {(() => {
+                    const isOwned = hasPaidPass && passRank(offer.tier) <= currentPassRank;
+
+                    return (
+                      <>
+                        <h3>{offer.label}</h3>
+                        {!isOwned ? <p>{offer.summary}</p> : null}
+                        {isOwned ? (
+                          <p className="offer-row__owned-note">
+                            <span className="offer-row__owned-title">You have this pass.</span>
+                            <span>
+                              Go back to the app and complete registration by clicking{" "}
+                              <strong>Finish setup</strong>.
+                            </span>
+                          </p>
+                        ) : offer.perks.length ? (
+                          <ul className="offer-perks">
+                            {offer.perks.map((perk) => (
+                              <li key={perk}>{perk}</li>
+                            ))}
+                          </ul>
+                        ) : null}
+                      </>
+                    );
+                  })()}
                 </div>
 
                 <div className="offer-row__action">
-                  <strong>
-                    {offer.price !== null
-                      ? formatPrice(offer.price, offer.currency)
-                      : "Price unavailable"}
-                  </strong>
-                  <button
-                    className="events-button"
-                    disabled={!offer.active || checkoutTier === offer.tier}
-                    onClick={() => startCheckout(offer)}
-                    type="button"
-                  >
-                    {checkoutTier === offer.tier ? "Opening..." : "Purchase"}
-                  </button>
+                  {hasPaidPass && passRank(offer.tier) <= currentPassRank ? (
+                    <InstallAppLinks
+                      includeHeading={false}
+                      buttonClassName="events-button events-button--full"
+                    />
+                  ) : (
+                    <button
+                      className="events-button"
+                      disabled={!offer.active || checkoutTier === offer.tier}
+                      onClick={() => startCheckout(offer)}
+                      type="button"
+                    >
+                      {checkoutTier === offer.tier ? "Opening..." : "Purchase"}
+                    </button>
+                  )}
                 </div>
               </article>
             ))}
           </div>
         ) : (
           <p className="events-muted">
-            {hasPaidPass
-              ? "There are no higher pass upgrades available for this event."
-              : "No payment offers available for this event."}
+            {hasPaidPass ? "No pass options are available yet." : "No payment offers available for this event."}
           </p>
         )}
       </section>
